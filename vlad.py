@@ -25,6 +25,7 @@ class VLAD(object):
         vlad = np.sign(vlad) * np.sqrt(np.abs(vlad))
         vlad_norm = np.linalg.norm(vlad)
         assert (vlad_norm > 1e-5)
+        # if vlad_norm > 1e-5:
         vlad /= vlad_norm
         return vlad
 

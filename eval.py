@@ -8,6 +8,7 @@ from sift import SIFT
 from surf import SURF
 from vlad import VLAD
 from vgg import VGG
+from superpoint import SuperPointLocalFeature
 from pca_global_descriptor import PCAGlobalDescriptor
 
 
@@ -114,6 +115,14 @@ def main():
             max_keypoint_count=max_keypoint_count,
             ldescriptor_length=ldescriptor_length,
             use_scale_orientation=vgg_use_scale_orientation)
+    elif str(model["local_feature"]) == "SP":
+        sp_weights_path = str(model["sp_weights_path"])
+        local_feature = SuperPointLocalFeature(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            weights_path=sp_weights_path)
     else:
         raise ValueError("local_feature")
 

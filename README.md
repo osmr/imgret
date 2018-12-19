@@ -10,3 +10,6 @@ See the reference papers:
 
 For using SIFT and SURF you have to compile and install OpenCV with OpenCV Contribs, and Python, SIFT/SURF support. 
 
+## Remarks
+
+For SuperPoint local features you should to download model weights from repo [MagicLeapResearch/SuperPointPretrainedNetwork](https://github.com/MagicLeapResearch/SuperPointPretrainedNetwork). 
