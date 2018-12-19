@@ -5,10 +5,10 @@ import cv2
 class LocalFeature(object):
 
     def __init__(self,
-                 image_size=(640, 360),
-                 keypoint_image_border_size=10,
-                 max_keypoint_count=512,
-                 ldescriptor_length=128):
+                 image_size,
+                 keypoint_image_border_size,
+                 max_keypoint_count,
+                 ldescriptor_length):
         super(LocalFeature, self).__init__()
         self.image_size = image_size
         self.keypoint_image_border_size = keypoint_image_border_size

@@ -4,10 +4,10 @@ import re
 import cv2
 import fnmatch
 import numpy as np
-from .sift import SIFT
-from .surf import SURF
-from .vlad import VLAD
-from .pca_global_descriptor import PCAGlobalDescriptor
+from sift import SIFT
+from surf import SURF
+from vlad import VLAD
+from pca_global_descriptor import PCAGlobalDescriptor
 
 
 def parse_args():
@@ -78,10 +78,33 @@ def main():
     model_file_path = os.path.join(args.model_dir_path, args.model_file_name)
     model = dict(np.load(model_file_path))
 
-    if model["local_feature"][0] == "SIFT":
-        local_feature = SIFT()
-    elif model["local_feature"][0] == "SURF":
-        local_feature = SURF()
+    image_size = tuple(model["image_size"])
+    keypoint_image_border_size = int(model["keypoint_image_border_size"])
+    max_keypoint_count = int(model["max_keypoint_count"])
+    ldescriptor_length = int(model["ldescriptor_length"])
+
+    if str(model["local_feature"]) == "SIFT":
+        sift_contrast_threshold = float(model["sift_contrast_threshold"])
+        sift_edge_threshold = int(model["sift_edge_threshold"])
+        local_feature = SIFT(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            contrast_threshold=sift_contrast_threshold,
+            edge_threshold=sift_edge_threshold)
+    elif str(model["local_feature"]) == "SURF":
+        surf_hessian_threshold = float(model["surf_hessian_threshold"])
+        surf_extended = bool(model["surf_extended"])
+        surf_upright = bool(model["surf_upright"])
+        local_feature = SURF(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            hessian_threshold=surf_hessian_threshold,
+            extended=surf_extended,
+            upright=surf_upright)
     else:
         raise ValueError("local_feature")
 

@@ -3,10 +3,10 @@ import os
 import re
 import fnmatch
 import numpy as np
-from .sift import SIFT
-from .surf import SURF
-from .vlad import VLAD
-from .pca_global_descriptor import PCAGlobalDescriptor
+from sift import SIFT
+from surf import SURF
+from vlad import VLAD
+from pca_global_descriptor import PCAGlobalDescriptor
 
 
 def parse_args():
@@ -78,12 +78,47 @@ def main():
 
     model = {}
 
+    image_size = (640, 360)
+    keypoint_image_border_size = 10
+    max_keypoint_count = 512
+
+    model["image_size"] = (640, 360)
+    model["keypoint_image_border_size"] = keypoint_image_border_size
+    model["max_keypoint_count"] = max_keypoint_count
+
     if args.local_feature == "SIFT":
-        local_feature = SIFT()
-        model["local_feature"] = np.array(["SIFT"])
+        ldescriptor_length = 128
+        sift_contrast_threshold = 0.04
+        sift_edge_threshold = 10
+        local_feature = SIFT(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            contrast_threshold=sift_contrast_threshold,
+            edge_threshold=sift_edge_threshold)
+        model["local_feature"] = "SIFT"
+        model["ldescriptor_length"] = ldescriptor_length
+        model["sift_contrast_threshold"] = sift_contrast_threshold
+        model["sift_edge_threshold"] = sift_edge_threshold
     elif args.local_feature == "SURF":
-        local_feature = SURF()
-        model["local_feature"] = np.array(["SIFT"])
+        ldescriptor_length = 128
+        surf_hessian_threshold = 400.0
+        surf_extended = True
+        surf_upright = True
+        local_feature = SURF(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            hessian_threshold=surf_hessian_threshold,
+            extended=surf_extended,
+            upright=surf_upright)
+        model["local_feature"] = "SURF"
+        model["ldescriptor_length"] = ldescriptor_length
+        model["surf_hessian_threshold"] = surf_hessian_threshold
+        model["surf_extended"] = surf_extended
+        model["surf_upright"] = surf_upright
     else:
         raise ValueError("local_feature")
 
