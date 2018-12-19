@@ -7,6 +7,7 @@ import numpy as np
 from sift import SIFT
 from surf import SURF
 from vlad import VLAD
+from vgg import VGG
 from pca_global_descriptor import PCAGlobalDescriptor
 
 
@@ -105,6 +106,14 @@ def main():
             hessian_threshold=surf_hessian_threshold,
             extended=surf_extended,
             upright=surf_upright)
+    elif str(model["local_feature"]) == "VGG":
+        vgg_use_scale_orientation = bool(model["vgg_use_scale_orientation"])
+        local_feature = VGG(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            use_scale_orientation=vgg_use_scale_orientation)
     else:
         raise ValueError("local_feature")
 

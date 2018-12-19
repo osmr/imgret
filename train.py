@@ -6,6 +6,7 @@ import numpy as np
 from sift import SIFT
 from surf import SURF
 from vlad import VLAD
+from vgg import VGG
 from pca_global_descriptor import PCAGlobalDescriptor
 
 
@@ -22,7 +23,7 @@ def parse_args():
         '--local-feature',
         type=str,
         default='SIFT',
-        help='type of local feature. options are SIFT and SURF.')
+        help='type of local feature. options are SIFT, SURF, VGG.')
     parser.add_argument(
         '--out-dir-path',
         type=str,
@@ -119,6 +120,18 @@ def main():
         model["surf_hessian_threshold"] = surf_hessian_threshold
         model["surf_extended"] = surf_extended
         model["surf_upright"] = surf_upright
+    elif args.local_feature == "VGG":
+        ldescriptor_length = 120
+        vgg_use_scale_orientation = False
+        local_feature = VGG(
+            image_size=image_size,
+            keypoint_image_border_size=keypoint_image_border_size,
+            max_keypoint_count=max_keypoint_count,
+            ldescriptor_length=ldescriptor_length,
+            use_scale_orientation=vgg_use_scale_orientation)
+        model["local_feature"] = "VGG"
+        model["ldescriptor_length"] = ldescriptor_length
+        model["vgg_use_scale_orientation"] = vgg_use_scale_orientation
     else:
         raise ValueError("local_feature")
 
